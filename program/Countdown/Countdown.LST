@@ -1,0 +1,191 @@
+文件：Countdown.c  盛群编译器版本 3.00 页次1
+
+
+
+;   9: {
+   9  0000              __acsr EQU [023H]
+   9  0000              __adcr EQU [022H]
+   9  0000              __adrh EQU [021H]
+   9  0000              __adrl EQU [020H]
+   9  0000              __pwm0 EQU [01fH]
+   9  0000              __intc1 EQU [01eH]
+   9  0000              __ctrl1 EQU [01bH]
+   9  0000              __ctrl0 EQU [01aH]
+   9  0000              __pcpu EQU [019H]
+   9  0000              __pcc EQU [018H]
+   9  0000              __pc EQU [017H]
+   9  0000              __pbpu EQU [016H]
+   9  0000              __pbc EQU [015H]
+   9  0000              __pb EQU [014H]
+   9  0000              __pawk EQU [013H]
+   9  0000              __papu EQU [012H]
+   9  0000              __pac EQU [011H]
+   9  0000              __pa EQU [010H]
+   9  0000              __tmr0c EQU [0dH]
+   9  0000              __tmr0 EQU [0cH]
+   9  0000              __intc0 EQU [0bH]
+   9  0000              __status EQU [0aH]
+   9  0000              __wdts EQU [09H]
+   9  0000              __tblh EQU [08H]
+   9  0000              __tblp EQU [07H]
+   9  0000              __pcl EQU [06H]
+   9  0000              __acc EQU [05H]
+   9  0000              __mp1 EQU [03H]
+   9  0000              __mp0 EQU [01H]
+   9  0000              __iar1 EQU [02H]
+   9  0000              __iar0 EQU [00H]
+   9  0000              @MAIN .SECTION 'CODE'
+   9  0000              _main PROC
+   9  0000              begin:
+
+;  10: 	u16 time = 50000;
+  10  0000  0F50        MOV A,050h
+  10  0001  0080     R  MOV CR1,A
+  10  0002  0FC3        MOV A,0c3h
+  10  0003  0080     R  MOV CR1[1],A
+
+;  11:     Key_Init();
+  11  0004  2000     E  CALL _Key_Init
+
+;  12: 	Led_Init();
+  12  0005  2000     E  CALL _Led_Init
+  12  0006              L2:
+  12  0006              L3:
+
+;  13: 	while(time--);
+  13  0006  0700     R  MOV A,CR1
+  13  0007  0080     R  MOV b0_1,A
+  13  0008  0700     R  MOV A,CR1[1]
+  13  0009  0080     R  MOV b0_1[1],A
+  13  000A  0700     R  MOV A,b0_1
+  13  000B  0A01        SUB A,01h
+文件：Countdown.c  盛群编译器版本 3.00 页次2 
+
+  13  000C  0080     R  MOV CR1,A
+  13  000D  0700     R  MOV A,b0_1[1]
+  13  000E  380A        SNZ [0Ah].0
+文件：Countdown.c  盛群编译器版本 3.00 页次2
+
+  13  000F  1585        DEC [05h]
+  13  0010  0080     R  MOV CR1[1],A
+  13  0011  1080     R  SZ b0_1
+  13  0012  2800     R  JMP L2
+  13  0013  1080     R  SZ b0_1[1]
+  13  0014  2800     R  JMP L2
+
+;  14:     TM_INIT();
+  14  0015  2000     E  CALL _TM_INIT
+
+;  16:    _emi=0;//禁止所有中断
+  16  0016  340B        CLR [0BH].0
+
+;  17:    _ctrl1=0x05;//开WDT
+  17  0017  0F05        MOV A,05h
+  17  0018  009B        MOV __ctrl1,A
+
+;  18:    _wdts=0x07;//WDT 溢出周期选择为2的15次方T WDTCK
+  18  0019  0F07        MOV A,07h
+  18  001A  0089        MOV __wdts,A
+
+;  19:    _emi=1;//开启允许中断 
+  19  001B  300B        SET [0BH].0
+  19  001C  2800     R  JMP L6
+  19  001D              L5:
+
+;  22:     	_clrwdt1();//清WDT//20130903
+  22  001D  0001        CLR WDT1
+
+;  23:     	_clrwdt2();
+  23  001E  0005        CLR WDT2
+
+;  24:     	if(timeflag == 1)
+  24  001F  0700     E  MOV A,_timeflag
+  24  0020  0C01        XOR A,01h
+  24  0021  390A        SNZ [0ah].2
+  24  0022  2800     R  JMP L8
+
+;  26: 		   timeflag = 0;
+  26  0023  1F00     E  CLR _timeflag
+
+;  27: 		   if(timeSeconds > 0)
+  27  0024  0700     E  MOV A,_timeSeconds
+  27  0025  0500     E  OR A,_timeSeconds[1]
+  27  0026  390A        SNZ [0ah].2
+  27  0027  2800     R  JMP L12
+  27  0028  0500     E  OR A,_timeSeconds[2]
+  27  0029  390A        SNZ [0Ah].2
+  27  002A  2800     R  JMP L12
+  27  002B  0500     E  OR A,_timeSeconds[3]
+  27  002C  3D0A        SZ [0Ah].2
+  27  002D  2800     R  JMP L10
+  27  002E              L12:
+
+;  29: 		        led_state();
+文件：Countdown.c  盛群编译器版本 3.00 页次3 
+
+  29  002E  2000     E  CALL _led_state
+
+;  30:     	   		RELAYCONTROL = 1;
+  30  002F  3210        SET [010H].4
+
+;  31: 		   }
+  31  0030  2800     R  JMP L11
+  31  0031              L10:
+
+;  34: 		   		RELAYCONTROL = 0;
+  34  0031  3610        CLR [010H].4
+
+;  35: 		   		Led_On(ALLOFF);
+  35  0032  0F00        MOV A,00h
+文件：Countdown.c  盛群编译器版本 3.00 页次3
+
+  35  0033  0080     E  MOV Led_On0,A
+  35  0034  2000     E  CALL _Led_On
+  35  0035              L11:
+  35  0035              L8:
+
+;  40:     	 key_Scan();  
+  40  0035  2000     E  CALL _key_Scan
+  40  0036              L6:
+
+;  20:     while(1)
+  20  0036  2800     R  JMP L5
+  20  0037              L1:
+
+;  42: }
+  42  0037  2800     R  JMP $
+  42  0000  0002[       LOCAL b0_1 DB 2 DUP(?)
+            00
+            ]
+
+;  10: 	u16 time = 50000;
+  10  0002  0002[       LOCAL CR1 DB 2 DUP (?) ; time
+            00
+            ]
+  10  0038              _main ENDP
+  10  0038              EXTERN Led_On0:BYTE
+  10  0038              EXTERN _TM_INIT:NEAR
+  10  0038              EXTERN _timeflag:BYTE
+  10  0038              EXTERN _timeSeconds:BYTE
+  10  0038              EXTERN _Led_On:NEAR
+  10  0038              EXTERN _led_state:NEAR
+  10  0038              EXTERN _Led_Init:NEAR
+  10  0038              EXTERN _Key_Init:NEAR
+  10  0038              EXTERN _key_Scan:NEAR
+
+;   8: void main()
+   8  0000              STARTSEC .SECTION  COM_L 'CODE'
+   8  0000              STARTUP:
+   8  0000              STARTSEC .SECTION  COM_E 'CODE'
+   8  0000  0003        RET
+   8  0000              @CODE .SECTION AT 0 'CODE'
+   8  0000  2000     R  CALL STARTUP
+   8  0001  2800     R  JMP begin
+   8  0002              @DUMMY PROC
+   8  0002  2000     R  CALL _main
+文件：Countdown.c  盛群编译器版本 3.00 页次4 
+
+   8  0003              @DUMMY ENDP
+
+
+        0 Errors

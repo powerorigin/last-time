@@ -1,0 +1,204 @@
+文件：CLOCK.c      盛群编译器版本 3.00 页次1
+
+
+
+;  15: {
+  15  0000              __acsr EQU [023H]
+  15  0000              __adcr EQU [022H]
+  15  0000              __adrh EQU [021H]
+  15  0000              __adrl EQU [020H]
+  15  0000              __pwm0 EQU [01fH]
+  15  0000              __intc1 EQU [01eH]
+  15  0000              __ctrl1 EQU [01bH]
+  15  0000              __ctrl0 EQU [01aH]
+  15  0000              __pcpu EQU [019H]
+  15  0000              __pcc EQU [018H]
+  15  0000              __pc EQU [017H]
+  15  0000              __pbpu EQU [016H]
+  15  0000              __pbc EQU [015H]
+  15  0000              __pb EQU [014H]
+  15  0000              __pawk EQU [013H]
+  15  0000              __papu EQU [012H]
+  15  0000              __pac EQU [011H]
+  15  0000              __pa EQU [010H]
+  15  0000              __tmr0c EQU [0dH]
+  15  0000              __tmr0 EQU [0cH]
+  15  0000              __intc0 EQU [0bH]
+  15  0000              __status EQU [0aH]
+  15  0000              __wdts EQU [09H]
+  15  0000              __tblh EQU [08H]
+  15  0000              __tblp EQU [07H]
+  15  0000              __pcl EQU [06H]
+  15  0000              __acc EQU [05H]
+  15  0000              __mp1 EQU [03H]
+  15  0000              __mp0 EQU [01H]
+  15  0000              __iar1 EQU [02H]
+  15  0000              __iar0 EQU [00H]
+  15  0000              @TM_INIT .SECTION 'CODE'
+  15  0000              PUBLIC _TM_INIT
+  15  0000              _TM_INIT PROC
+
+;  16: 		_tmr0 = 0x06;             //1ms
+  16  0000  0F06        MOV A,06h
+  16  0001  008C        MOV __tmr0,A
+
+;  17: 		_tmr0c = 0b10010100;
+  17  0002  0F94        MOV A,094h
+  17  0003  008D        MOV __tmr0c,A
+
+;  18: 		_t0e=1;//定时/计数器0 中断使能	
+  18  0004  310B        SET [0BH].2
+
+;  19:    	    _t0on=1;//开定时器
+  19  0005  320D        SET [0DH].4
+
+;  20: 		_emi=1; 
+  20  0006  300B        SET [0BH].0
+
+;  21: 		timeSeconds = 0; 
+  21  0007  1F00     R  CLR _timeSeconds
+  21  0008  1F00     R  CLR _timeSeconds[1]
+  21  0009  1F00     R  CLR _timeSeconds[2]
+文件：CLOCK.c      盛群编译器版本 3.00 页次2 
+
+  21  000A  1F00     R  CLR _timeSeconds[3]
+
+;  22: 		timems = 0;
+  22  000B  1F00     R  CLR _timems
+  22  000C  1F00     R  CLR _timems[1]
+  22  000D  1F00     R  CLR _timems[2]
+文件：CLOCK.c      盛群编译器版本 3.00 页次2
+
+  22  000E  1F00     R  CLR _timems[3]
+
+;  23: 		timeflag = 0;
+  23  000F  1F00     R  CLR _timeflag
+  23  0010              L1:
+  23  0010  0003        RET
+  23  0011              _TM_INIT ENDP
+
+;  30: { 
+  30  0000              @@TM_ISR .SECTION AT 08H 'CODE'
+  30  0000  2800     R  JMP _TM_ISR
+  30  0000              @TM_ISR .SECTION 'CODE'
+  30  0000              _TM_ISR PROC
+  30  0000  0080     E  MOV V2A,A
+  30  0001  070A        MOV A,[0AH]
+  30  0002  0080     E  MOV V2S,A
+
+;  31:    _tmr0 = 0x06;  
+  31  0003  0F06        MOV A,06h
+  31  0004  008C        MOV __tmr0,A
+
+;  32:    timems++;
+  32  0005  1480     R  INC _timems
+  32  0006  3D0A        SZ [0AH].2
+  32  0007  1480     R  INC _timems[1]
+  32  0008  3D0A        SZ [0AH].2
+  32  0009  1480     R  INC _timems[2]
+  32  000A  3D0A        SZ [0AH].2
+  32  000B  1480     R  INC _timems[3]
+
+;  33:    timeflag = 1;
+  33  000C  0F01        MOV A,01h
+  33  000D  0080     R  MOV _timeflag,A
+
+;  34:    if(timems > 60000)
+  34  000E  0F00        MOV A,00h
+  34  000F  0200     R  SUB A,_timems[3]
+  34  0010  380A        SNZ [0ah].0
+  34  0011  2800     R  JMP L7
+  34  0012  390A        SNZ [0ah].2
+  34  0013  2800     R  JMP L3
+  34  0014  0F00        MOV A,00h
+  34  0015  0200     R  SUB A,_timems[2]
+  34  0016  380A        SNZ [0Ah].0
+  34  0017  2800     R  JMP L7
+  34  0018  390A        SNZ [0Ah].2
+  34  0019  2800     R  JMP L3
+  34  001A  0FEA        MOV A,0eah
+  34  001B  0200     R  SUB A,_timems[1]
+  34  001C  380A        SNZ [0Ah].0
+  34  001D  2800     R  JMP L7
+  34  001E  390A        SNZ [0Ah].2
+文件：CLOCK.c      盛群编译器版本 3.00 页次3 
+
+  34  001F  2800     R  JMP L3
+  34  0020  0F60        MOV A,060h
+  34  0021  0200     R  SUB A,_timems
+  34  0022  3C0A        SZ [0ah].0
+  34  0023  2800     R  JMP L3
+  34  0024              L7:
+
+;  36:    	  timems = 0;
+  36  0024  1F00     R  CLR _timems
+  36  0025  1F00     R  CLR _timems[1]
+  36  0026  1F00     R  CLR _timems[2]
+  36  0027  1F00     R  CLR _timems[3]
+
+;  37:    	  if(timeSeconds > 0)
+文件：CLOCK.c      盛群编译器版本 3.00 页次3
+
+  37  0028  0700     R  MOV A,_timeSeconds
+  37  0029  0500     R  OR A,_timeSeconds[1]
+  37  002A  390A        SNZ [0ah].2
+  37  002B  2800     R  JMP L8
+  37  002C  0500     R  OR A,_timeSeconds[2]
+  37  002D  390A        SNZ [0Ah].2
+  37  002E  2800     R  JMP L8
+  37  002F  0500     R  OR A,_timeSeconds[3]
+  37  0030  3D0A        SZ [0Ah].2
+  37  0031  2800     R  JMP L5
+  37  0032              L8:
+
+;  38:    	    timeSeconds--;
+  38  0032  0700     R  MOV A,_timeSeconds
+  38  0033  0A01        SUB A,01h
+  38  0034  0080     R  MOV _timeSeconds,A
+  38  0035  3C0A        SZ [0AH].0
+  38  0036  2800     R  JMP $+11
+  38  0037  0700     R  MOV A,_timeSeconds[1]
+  38  0038  0A01        SUB A,1
+  38  0039  0080     R  MOV _timeSeconds[1],A
+  38  003A  3C0A        SZ [0AH].0
+  38  003B  2800     R  JMP $+6
+  38  003C  0700     R  MOV A,_timeSeconds[2]
+  38  003D  0A01        SUB A,1
+  38  003E  0080     R  MOV _timeSeconds[2],A
+  38  003F  380A        SNZ [0AH].0
+  38  0040  1580     R  DEC _timeSeconds[3]
+  38  0041              L5:
+  38  0041              L3:
+  38  0041              L2:
+  38  0041  0700     E  MOV A,V2S
+  38  0042  008A        MOV [0AH],A
+  38  0043  0700     E  MOV A,V2A
+  38  0044  0004        RETI
+  38  0045              _TM_ISR ENDP
+  38  0000              @TM_ISR .SECTION 'DATA'
+  38  0000              PUBLIC _timems
+  38  0000              @timems .SECTION 'DATA'
+
+;   9: u32 timems;
+   9  0000  0004[       _timems DB 4 DUP (?) ; timems
+            00
+            ]
+文件：CLOCK.c      盛群编译器版本 3.00 页次4 
+
+   9  0004              PUBLIC _timeflag
+   9  0000              @timeflag .SECTION 'DATA'
+
+;   7: u8 timeflag;
+   7  0000  00          _timeflag DB ? ; timeflag
+   7  0001              PUBLIC _timeSeconds
+   7  0000              @timeSeconds .SECTION 'DATA'
+
+;   8: u32 timeSeconds;
+   8  0000  0004[       _timeSeconds DB 4 DUP (?) ; timeSeconds
+            00
+            ]
+   8  0004              EXTERN V2A:BYTE
+   8  0004              EXTERN V2S:BYTE
+
+
+        0 Errors

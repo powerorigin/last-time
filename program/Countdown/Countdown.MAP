@@ -1,0 +1,160 @@
+
+连接器　版本8.6.1.140827
+Input Object File: E:\project\倒计时插座\Countdown\COUNTDOWN.OBJ
+Input Object File: E:\project\倒计时插座\Countdown\KEY.OBJ
+Input Object File: E:\project\倒计时插座\Countdown\LED.OBJ
+Input Object File: E:\project\倒计时插座\Countdown\CLOCK.OBJ
+
+Input Library File: C:\Program Files\Holtek MCU Development Tools\HT-IDE3000V7.x\LIB\MATH6.LIB
+Input Library File: C:\Program Files\Holtek MCU Development Tools\HT-IDE3000V7.x\LIB\time_srsc.lib
+Input Library File: C:\Program Files\Holtek MCU Development Tools\HT-IDE3000V7.x\LIB\ctype_srsc.lib
+Input Library File: C:\Program Files\Holtek MCU Development Tools\HT-IDE3000V7.x\LIB\math_srsc.lib
+Input Library File: C:\Program Files\Holtek MCU Development Tools\HT-IDE3000V7.x\LIB\stdlib_srsc.lib
+Input Library File: C:\Program Files\Holtek MCU Development Tools\HT-IDE3000V7.x\LIB\string_srsc.lib
+
+
+     Start     End      Length     Class      Name
+     0000h     0002h    0003h      CODE       @CODE (E:\project\倒计时插座\Countdown\COUNTDOWN.OBJ)
+     0003h     0003h    0001h      CODE       STARTSEC (E:\project\倒计时插座\Countdown\COUNTDOWN.OBJ)
+     0004h     0006h    0003h      CODE       @Key_Init (E:\project\倒计时插座\Countdown\KEY.OBJ)
+     0008h     0008h    0001h      CODE       @@TM_ISR (E:\project\倒计时插座\Countdown\CLOCK.OBJ)
+     0009h     0031h    0029h      CODE       MATH (C:\Program Files\Holtek MCU Development Tools\HT-IDE3000V7.x\LIB\MATH6.LIB)
+     0032h     0069h    0038h      CODE       @MAIN (E:\project\倒计时插座\Countdown\COUNTDOWN.OBJ)
+     006ah     007dh    0014h      CODE       @key_Read (E:\project\倒计时插座\Countdown\KEY.OBJ)
+     007eh     00c2h    0045h      CODE       @KeyProcCB (E:\project\倒计时插座\Countdown\KEY.OBJ)
+     00c3h     00f8h    0036h      CODE       @key_Scan (E:\project\倒计时插座\Countdown\KEY.OBJ)
+     00f9h     0104h    000ch      CODE       @Led_Init (E:\project\倒计时插座\Countdown\LED.OBJ)
+     0105h     016fh    006bh      CODE       @Led_On (E:\project\倒计时插座\Countdown\LED.OBJ)
+     0170h     02c9h    015ah      CODE       @led_state (E:\project\倒计时插座\Countdown\LED.OBJ)
+     02cah     02dah    0011h      CODE       @TM_INIT (E:\project\倒计时插座\Countdown\CLOCK.OBJ)
+     02dbh     031fh    0045h      CODE       @TM_ISR (E:\project\倒计时插座\Countdown\CLOCK.OBJ)
+     0040h     0050h    0011h      DATA       CTMPDATA (C:\Program Files\Holtek MCU Development Tools\HT-IDE3000V7.x\LIB\MATH6.LIB)
+     006ch     006dh    0002h      DATA       @key_stat (E:\project\倒计时插座\Countdown\KEY.OBJ)
+     006eh     0071h    0004h      DATA       @timems (E:\project\倒计时插座\Countdown\CLOCK.OBJ)
+     0072h     0072h    0001h      DATA       @timeflag (E:\project\倒计时插座\Countdown\CLOCK.OBJ)
+     0073h     0076h    0004h      DATA       @timeSeconds (E:\project\倒计时插座\Countdown\CLOCK.OBJ)
+
+     Local Sections
+
+     Start     End      Length     Class      Name
+     006ch     006ch    0000h      LOCAL      @DUMMY (E:\project\倒计时插座\Countdown\COUNTDOWN.OBJ)
+     0068h     006bh    0004h      LOCAL      _main (E:\project\倒计时插座\Countdown\COUNTDOWN.OBJ)
+     0051h     0051h    0000h      LOCAL      _Key_Init (E:\project\倒计时插座\Countdown\KEY.OBJ)
+     0053h     0053h    0000h      LOCAL      _Led_Init (E:\project\倒计时插座\Countdown\LED.OBJ)
+     0051h     0052h    0002h      LOCAL      _Led_On (E:\project\倒计时插座\Countdown\LED.OBJ)
+     0051h     0051h    0000h      LOCAL      _TM_INIT (E:\project\倒计时插座\Countdown\CLOCK.OBJ)
+     0053h     0062h    0010h      LOCAL      _led_state (E:\project\倒计时插座\Countdown\LED.OBJ)
+     0051h     0051h    0000h      LOCAL      DIVUL4 (C:\Program Files\Holtek MCU Development Tools\HT-IDE3000V7.x\LIB\MATH6.LIB)
+     0065h     0067h    0003h      LOCAL      _key_Scan (E:\project\倒计时插座\Countdown\KEY.OBJ)
+     0051h     0052h    0002h      LOCAL      _key_Read (E:\project\倒计时插座\Countdown\KEY.OBJ)
+     0063h     0064h    0002h      LOCAL      _KeyProcCB (E:\project\倒计时插座\Countdown\KEY.OBJ)
+
+     Indepentent Local Sections
+
+     Start     End      Length     Class      Name
+     006ch     006ch    0000h      ILOCAL     _TM_ISR (E:\project\倒计时插座\Countdown\CLOCK.OBJ)
+
+     Public Symbols Information
+     Address            Public by Name
+     0009h              DIVUL4
+     0063h              KeyProcCB0
+     0064h              KeyProcCB1
+     0040h              RH
+     0041h              RM
+     0042h              RU
+     004bh              T10
+     004ch              T11
+     004dh              T12
+     004eh              T13
+     0043h              T2
+     0044h              T3
+     0045h              T4
+     0046h              T5
+     0047h              T6
+     0048h              T7
+     0049h              T8
+     004ah              T9
+     004fh              V2A
+     0050h              V2S
+     007eh              _KeyProcCB
+     0004h              _Key_Init
+     00f9h              _Led_Init
+     0105h              _Led_On
+     02cah              _TM_INIT
+     006ah              _key_Read
+     00c3h              _key_Scan
+     006ch              _key_stat
+     0170h              _led_state
+     0073h              _timeSeconds
+     0072h              _timeflag
+     006eh              _timems
+     0051h              key_Read0
+
+     Address            Public by Value
+     0004h              _Key_Init
+     0009h              DIVUL4
+     0040h              RH
+     0041h              RM
+     0042h              RU
+     0043h              T2
+     0044h              T3
+     0045h              T4
+     0046h              T5
+     0047h              T6
+     0048h              T7
+     0049h              T8
+     004ah              T9
+     004bh              T10
+     004ch              T11
+     004dh              T12
+     004eh              T13
+     004fh              V2A
+     0050h              V2S
+     0051h              key_Read0
+     0063h              KeyProcCB0
+     0064h              KeyProcCB1
+     006ah              _key_Read
+     006ch              _key_stat
+     006eh              _timems
+     0072h              _timeflag
+     0073h              _timeSeconds
+     007eh              _KeyProcCB
+     00c3h              _key_Scan
+     00f9h              _Led_Init
+     0105h              _Led_On
+     0170h              _led_state
+     02cah              _TM_INIT
+
+
+ROM Usage Statistics
+     Size      Used     Percentage
+     0400h     031fh    78%
+
+RAM Usage Statistics
+     Size      Used     Percentage
+     0040h     0037h    85%
+
+Use Stack Count
+_main: 4
+
+Call Tree
+    @DUMMY
+        _main
+            _Key_Init
+            _Led_Init
+                _Led_On
+            _TM_INIT
+            _led_state
+                DIVUL4
+                _Led_On
+            _Led_On
+            _key_Scan
+                _key_Read
+                _KeyProcCB
+                    _led_state
+                        DIVUL4
+                        _Led_On
+
+HLINK : 程序的开始执行点在程序段'@CODE'（地址0）。定义在'E:\project\倒计时插座\Countdown\COUNTDOWN.OBJ' 文件中
+
+错误总数 : 0  警告总数 : 0

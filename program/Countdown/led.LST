@@ -1,0 +1,810 @@
+文件：led.c        盛群编译器版本 3.00 页次1
+
+
+
+;   6: {
+   6  0000              __acsr EQU [023H]
+   6  0000              __adcr EQU [022H]
+   6  0000              __adrh EQU [021H]
+   6  0000              __adrl EQU [020H]
+   6  0000              __pwm0 EQU [01fH]
+   6  0000              __intc1 EQU [01eH]
+   6  0000              __ctrl1 EQU [01bH]
+   6  0000              __ctrl0 EQU [01aH]
+   6  0000              __pcpu EQU [019H]
+   6  0000              __pcc EQU [018H]
+   6  0000              __pc EQU [017H]
+   6  0000              __pbpu EQU [016H]
+   6  0000              __pbc EQU [015H]
+   6  0000              __pb EQU [014H]
+   6  0000              __pawk EQU [013H]
+   6  0000              __papu EQU [012H]
+   6  0000              __pac EQU [011H]
+   6  0000              __pa EQU [010H]
+   6  0000              __tmr0c EQU [0dH]
+   6  0000              __tmr0 EQU [0cH]
+   6  0000              __intc0 EQU [0bH]
+   6  0000              __status EQU [0aH]
+   6  0000              __wdts EQU [09H]
+   6  0000              __tblh EQU [08H]
+   6  0000              __tblp EQU [07H]
+   6  0000              __pcl EQU [06H]
+   6  0000              __acc EQU [05H]
+   6  0000              __mp1 EQU [03H]
+   6  0000              __mp0 EQU [01H]
+   6  0000              __iar1 EQU [02H]
+   6  0000              __iar0 EQU [00H]
+   6  0000              @Led_Init .SECTION 'CODE'
+   6  0000              PUBLIC _Led_Init
+   6  0000              _Led_Init PROC
+
+;   7: 	_pawk = 0x00;
+   7  0000  1F13        CLR __pawk
+
+;   8: 	_pac = 0x83;
+   8  0001  0F83        MOV A,083h
+   8  0002  0091        MOV __pac,A
+
+;   9: 	_papu = 0x7e;
+   9  0003  0F7E        MOV A,07eh
+   9  0004  0092        MOV __papu,A
+
+;  10: 	_pbc = 0x00;
+  10  0005  1F15        CLR __pbc
+
+;  11: 	_pbpu = 0xff;	
+  11  0006  1F96        SET __pbpu
+
+;  13: 	RELAYCONTROL = 0;
+  13  0007  3610        CLR [010H].4
+
+;  14: 	Led_On(ALLOFF);
+文件：led.c        盛群编译器版本 3.00 页次2 
+
+  14  0008  0F00        MOV A,00h
+  14  0009  0080     R  MOV Led_On0,A
+  14  000A  2000     R  CALL _Led_On
+  14  000B              L1:
+  14  000B  0003        RET
+  14  000C              _Led_Init ENDP
+文件：led.c        盛群编译器版本 3.00 页次2
+
+
+;  18: {
+  18  0000              @Led_On .SECTION 'CODE'
+  18  0000              PUBLIC _Led_On
+  18  0000              _Led_On PROC
+
+;  17: void Led_On(u8 bits)
+  17  0000              PUBLIC Led_On0
+  17  0000  00          LOCAL Led_On0 DB ? ; bits
+
+;  19: 	switch(bits)
+  19  0000  0700     R  MOV A,Led_On0
+  19  0001  0080     R  MOV b0_2,A
+  19  0002  1080     R  SZ b0_2
+  19  0003  2800     R  JMP L16
+  19  0004  2800     R  JMP L5
+  19  0005              L16:
+  19  0005  0700     R  MOV A,b0_2
+  19  0006  0C01        XOR A,01h
+  19  0007  3D0A        SZ [0ah].2
+  19  0008  2800     R  JMP L6
+  19  0009  0700     R  MOV A,b0_2
+  19  000A  0C02        XOR A,02h
+  19  000B  3D0A        SZ [0ah].2
+  19  000C  2800     R  JMP L7
+  19  000D  0700     R  MOV A,b0_2
+  19  000E  0C03        XOR A,03h
+  19  000F  3D0A        SZ [0ah].2
+  19  0010  2800     R  JMP L8
+  19  0011  0700     R  MOV A,b0_2
+  19  0012  0C04        XOR A,04h
+  19  0013  3D0A        SZ [0ah].2
+  19  0014  2800     R  JMP L9
+  19  0015  0700     R  MOV A,b0_2
+  19  0016  0C05        XOR A,05h
+  19  0017  3D0A        SZ [0ah].2
+  19  0018  2800     R  JMP L10
+  19  0019  0700     R  MOV A,b0_2
+  19  001A  0C06        XOR A,06h
+  19  001B  3D0A        SZ [0ah].2
+  19  001C  2800     R  JMP L11
+  19  001D  0700     R  MOV A,b0_2
+  19  001E  0C07        XOR A,07h
+  19  001F  3D0A        SZ [0ah].2
+  19  0020  2800     R  JMP L12
+  19  0021  0700     R  MOV A,b0_2
+  19  0022  0C08        XOR A,08h
+  19  0023  3D0A        SZ [0ah].2
+  19  0024  2800     R  JMP L13
+  19  0025  0700     R  MOV A,b0_2
+  19  0026  0C09        XOR A,09h
+  19  0027  3D0A        SZ [0ah].2
+文件：led.c        盛群编译器版本 3.00 页次3 
+
+  19  0028  2800     R  JMP L14
+  19  0029  0700     R  MOV A,b0_2
+  19  002A  0C0A        XOR A,0ah
+  19  002B  3D0A        SZ [0ah].2
+  19  002C  2800     R  JMP L15
+  19  002D  2800     R  JMP L4
+  19  002E              L5:
+文件：led.c        盛群编译器版本 3.00 页次3
+
+
+;  21: 	    case ALLOFF: _pa |= 0x6c;
+  21  002E  0F6C        MOV A,06ch
+  21  002F  0590        ORM A,__pa
+
+;  22: 	                 _pb |= 0x3f;
+  22  0030  0F3F        MOV A,03fh
+  22  0031  0594        ORM A,__pb
+
+;  23: 	            break;
+  23  0032  2800     R  JMP L4
+  23  0033              L6:
+
+;  24: 	    case 1: _pa |= 0x60;
+  24  0033  0F60        MOV A,060h
+  24  0034  0590        ORM A,__pa
+
+;  25: 	            _pb &= 0xf7;
+  25  0035  3594        CLR __pb.3
+
+;  26: 	            _pb |= 0x30;
+  26  0036  0F30        MOV A,030h
+  26  0037  0594        ORM A,__pb
+
+;  27: 	            break;        
+  27  0038  2800     R  JMP L4
+  27  0039              L7:
+
+;  28: 	    case 2: _pa |= 0x60;
+  28  0039  0F60        MOV A,060h
+  28  003A  0590        ORM A,__pa
+
+;  29: 	            _pb &= 0xef;
+  29  003B  3614        CLR __pb.4
+
+;  30: 	            _pb |= 0x28;
+  30  003C  0F28        MOV A,028h
+  30  003D  0594        ORM A,__pb
+
+;  31: 	            break; 
+  31  003E  2800     R  JMP L4
+  31  003F              L8:
+
+;  32: 	    case 3: _pa |= 0x60;
+  32  003F  0F60        MOV A,060h
+  32  0040  0590        ORM A,__pa
+
+;  33: 	            _pb &= 0xdf;
+  33  0041  3694        CLR __pb.5
+
+;  34: 	            _pb |= 0x18;
+文件：led.c        盛群编译器版本 3.00 页次4 
+
+  34  0042  0F18        MOV A,018h
+  34  0043  0594        ORM A,__pb
+
+;  35: 	            break;       
+  35  0044  2800     R  JMP L4
+  35  0045              L9:
+
+;  36: 	    case 4: _pa &= 0xbf;
+  36  0045  3710        CLR __pa.6
+
+;  37: 	            _pa |= 0x20;
+  37  0046  3290        SET __pa.5
+
+;  38: 	    		_pb |= 0x38;
+  38  0047  0F38        MOV A,038h
+  38  0048  0594        ORM A,__pb
+
+;  39: 	            break;      
+  39  0049  2800     R  JMP L4
+  39  004A              L10:
+
+;  40: 	    case 5: _pa &= 0xdf;
+  40  004A  3690        CLR __pa.5
+
+;  41: 	            _pa |= 0x40;
+  41  004B  3310        SET __pa.6
+
+;  42: 	    		_pb |= 0x38;
+  42  004C  0F38        MOV A,038h
+  42  004D  0594        ORM A,__pb
+文件：led.c        盛群编译器版本 3.00 页次4
+
+
+;  43: 	            break;   
+  43  004E  2800     R  JMP L4
+  43  004F              L11:
+
+;  44: 	    case 6: _pb &= 0xfb;
+  44  004F  3514        CLR __pb.2
+
+;  45: 	            _pb |= 0x03;
+  45  0050  0F03        MOV A,03h
+  45  0051  0594        ORM A,__pb
+
+;  46: 	    		_pa |= 0x0c;
+  46  0052  0F0C        MOV A,0ch
+  46  0053  0590        ORM A,__pa
+
+;  47: 	            break;                                 
+  47  0054  2800     R  JMP L4
+  47  0055              L12:
+
+;  48: 	    case 7: _pb &= 0xfd;
+  48  0055  3494        CLR __pb.1
+
+;  49: 	            _pb |= 0x05;
+  49  0056  0F05        MOV A,05h
+  49  0057  0594        ORM A,__pb
+
+;  50: 	    		_pa |= 0x0c;
+文件：led.c        盛群编译器版本 3.00 页次5 
+
+  50  0058  0F0C        MOV A,0ch
+  50  0059  0590        ORM A,__pa
+
+;  51: 	            break;    
+  51  005A  2800     R  JMP L4
+  51  005B              L13:
+
+;  52: 	    case 8: _pb &= 0xfe;
+  52  005B  3414        CLR __pb.0
+
+;  53: 	            _pb |= 0x06;
+  53  005C  0F06        MOV A,06h
+  53  005D  0594        ORM A,__pb
+
+;  54: 	    		_pa |= 0x0c;
+  54  005E  0F0C        MOV A,0ch
+  54  005F  0590        ORM A,__pa
+
+;  55: 	            break;   
+  55  0060  2800     R  JMP L4
+  55  0061              L14:
+
+;  56: 	    case 9: _pa &= 0xfb;
+  56  0061  3510        CLR __pa.2
+
+;  57: 	            _pa |= 0x08;
+  57  0062  3190        SET __pa.3
+
+;  58: 	    		_pb |= 0x07;
+  58  0063  0F07        MOV A,07h
+  58  0064  0594        ORM A,__pb
+
+;  59: 	            break;   
+  59  0065  2800     R  JMP L4
+  59  0066              L15:
+
+;  60: 	    case 10:_pa &= 0xf7;
+  60  0066  3590        CLR __pa.3
+
+;  61: 	            _pa |= 0x04;
+  61  0067  3110        SET __pa.2
+
+;  62: 	    		_pb |= 0x07;
+  62  0068  0F07        MOV A,07h
+  62  0069  0594        ORM A,__pb
+  62  006A              L4:
+  62  006A              L2:
+  62  006A  0003        RET
+  62  0001  00          LOCAL b0_2 DB ?
+  62  006B              _Led_On ENDP
+
+;  69: {
+  69  0000              @led_state .SECTION 'CODE'
+文件：led.c        盛群编译器版本 3.00 页次5
+
+  69  0000              PUBLIC _led_state
+  69  0000              _led_state PROC
+
+;  71: 	    temp = timeSeconds%120;
+  71  0000  0700     E  MOV A,_timeSeconds
+文件：led.c        盛群编译器版本 3.00 页次6 
+
+  71  0001  0080     E  MOV T2,A
+  71  0002  0700     E  MOV A,_timeSeconds[1]
+  71  0003  0080     E  MOV RH,A
+  71  0004  0700     E  MOV A,_timeSeconds[2]
+  71  0005  0080     E  MOV RM,A
+  71  0006  0700     E  MOV A,_timeSeconds[3]
+  71  0007  0080     E  MOV RU,A
+  71  0008  0F00        MOV A,00h
+  71  0009  0080     E  MOV T6,A
+  71  000A  0F00        MOV A,00h
+  71  000B  0080     E  MOV T5,A
+  71  000C  0F00        MOV A,00h
+  71  000D  0080     E  MOV T4,A
+  71  000E  0F78        MOV A,078h
+  71  000F  0080     E  MOV T3,A
+  71  0010  2000     E  CALL DIVUL4
+  71  0011  0700     E  MOV A,T10
+  71  0012  0080     R  MOV CR2[3],A
+  71  0013  0700     E  MOV A,T9
+  71  0014  0080     R  MOV CR2[2],A
+  71  0015  0700     E  MOV A,T8
+  71  0016  0080     R  MOV CR2[1],A
+  71  0017  0700     E  MOV A,T7
+  71  0018  0080     R  MOV CR2,A
+
+;  72: 	    switch((temp +19)/20)
+  72  0019  0F13        MOV A,013h
+  72  001A  0300     R  ADD A,CR2
+  72  001B  0080     R  MOV b0_3,A
+  72  001C  0F00        MOV A,00h
+  72  001D  1300     R  ADC A,CR2[1]
+  72  001E  0080     R  MOV b0_3[1],A
+  72  001F  0F00        MOV A,00h
+  72  0020  1300     R  ADC A,CR2[2]
+  72  0021  0080     R  MOV b0_3[2],A
+  72  0022  0F00        MOV A,00h
+  72  0023  1300     R  ADC A,CR2[3]
+  72  0024  0080     R  MOV b0_3[3],A
+  72  0025  0700     R  MOV A,b0_3
+  72  0026  0080     E  MOV T2,A
+  72  0027  0700     R  MOV A,b0_3[1]
+  72  0028  0080     E  MOV RH,A
+  72  0029  0700     R  MOV A,b0_3[2]
+  72  002A  0080     E  MOV RM,A
+  72  002B  0700     R  MOV A,b0_3[3]
+  72  002C  0080     E  MOV RU,A
+  72  002D  0F00        MOV A,00h
+  72  002E  0080     E  MOV T6,A
+  72  002F  0F00        MOV A,00h
+  72  0030  0080     E  MOV T5,A
+  72  0031  0F00        MOV A,00h
+  72  0032  0080     E  MOV T4,A
+  72  0033  0F14        MOV A,014h
+  72  0034  0080     E  MOV T3,A
+  72  0035  2000     E  CALL DIVUL4
+  72  0036  0700     E  MOV A,RU
+文件：led.c        盛群编译器版本 3.00 页次6
+
+  72  0037  0080     R  MOV CR3[3],A
+  72  0038  0700     E  MOV A,RM
+文件：led.c        盛群编译器版本 3.00 页次7 
+
+  72  0039  0080     R  MOV CR3[2],A
+  72  003A  0700     E  MOV A,RH
+  72  003B  0080     R  MOV CR3[1],A
+  72  003C  0700     E  MOV A,T2
+  72  003D  0080     R  MOV CR3,A
+  72  003E  0700     R  MOV A,CR3
+  72  003F  0500     R  OR A,CR3[1]
+  72  0040  390A        SNZ [0ah].2
+  72  0041  2800     R  JMP L38
+  72  0042  0500     R  OR A,CR3[2]
+  72  0043  390A        SNZ [0Ah].2
+  72  0044  2800     R  JMP L38
+  72  0045  0500     R  OR A,CR3[3]
+  72  0046  3D0A        SZ [0Ah].2
+  72  0047  2800     R  JMP L21
+  72  0048              L38:
+  72  0048  0700     R  MOV A,CR3
+  72  0049  0C01        XOR A,01h
+  72  004A  390A        SNZ [0ah].2
+  72  004B  2800     R  JMP L39
+  72  004C  0700     R  MOV A,CR3[1]
+  72  004D  0C00        XOR A,00h
+  72  004E  390A        SNZ [0ah].2
+  72  004F  2800     R  JMP L39
+  72  0050  0700     R  MOV A,CR3[2]
+  72  0051  0C00        XOR A,00h
+  72  0052  390A        SNZ [0ah].2
+  72  0053  2800     R  JMP L39
+  72  0054  0700     R  MOV A,CR3[3]
+  72  0055  0C00        XOR A,00h
+  72  0056  3D0A        SZ [0ah].2
+  72  0057  2800     R  JMP L24
+  72  0058              L39:
+  72  0058  0700     R  MOV A,CR3
+  72  0059  0C02        XOR A,02h
+  72  005A  390A        SNZ [0ah].2
+  72  005B  2800     R  JMP L40
+  72  005C  0700     R  MOV A,CR3[1]
+  72  005D  0C00        XOR A,00h
+  72  005E  390A        SNZ [0ah].2
+  72  005F  2800     R  JMP L40
+  72  0060  0700     R  MOV A,CR3[2]
+  72  0061  0C00        XOR A,00h
+  72  0062  390A        SNZ [0ah].2
+  72  0063  2800     R  JMP L40
+  72  0064  0700     R  MOV A,CR3[3]
+  72  0065  0C00        XOR A,00h
+  72  0066  3D0A        SZ [0ah].2
+  72  0067  2800     R  JMP L25
+  72  0068              L40:
+  72  0068  0700     R  MOV A,CR3
+  72  0069  0C03        XOR A,03h
+  72  006A  390A        SNZ [0ah].2
+  72  006B  2800     R  JMP L41
+  72  006C  0700     R  MOV A,CR3[1]
+  72  006D  0C00        XOR A,00h
+  72  006E  390A        SNZ [0ah].2
+文件：led.c        盛群编译器版本 3.00 页次7
+
+  72  006F  2800     R  JMP L41
+文件：led.c        盛群编译器版本 3.00 页次8 
+
+  72  0070  0700     R  MOV A,CR3[2]
+  72  0071  0C00        XOR A,00h
+  72  0072  390A        SNZ [0ah].2
+  72  0073  2800     R  JMP L41
+  72  0074  0700     R  MOV A,CR3[3]
+  72  0075  0C00        XOR A,00h
+  72  0076  3D0A        SZ [0ah].2
+  72  0077  2800     R  JMP L26
+  72  0078              L41:
+  72  0078  0700     R  MOV A,CR3
+  72  0079  0C04        XOR A,04h
+  72  007A  390A        SNZ [0ah].2
+  72  007B  2800     R  JMP L42
+  72  007C  0700     R  MOV A,CR3[1]
+  72  007D  0C00        XOR A,00h
+  72  007E  390A        SNZ [0ah].2
+  72  007F  2800     R  JMP L42
+  72  0080  0700     R  MOV A,CR3[2]
+  72  0081  0C00        XOR A,00h
+  72  0082  390A        SNZ [0ah].2
+  72  0083  2800     R  JMP L42
+  72  0084  0700     R  MOV A,CR3[3]
+  72  0085  0C00        XOR A,00h
+  72  0086  3D0A        SZ [0ah].2
+  72  0087  2800     R  JMP L27
+  72  0088              L42:
+  72  0088  0700     R  MOV A,CR3
+  72  0089  0C05        XOR A,05h
+  72  008A  390A        SNZ [0ah].2
+  72  008B  2800     R  JMP L43
+  72  008C  0700     R  MOV A,CR3[1]
+  72  008D  0C00        XOR A,00h
+  72  008E  390A        SNZ [0ah].2
+  72  008F  2800     R  JMP L43
+  72  0090  0700     R  MOV A,CR3[2]
+  72  0091  0C00        XOR A,00h
+  72  0092  390A        SNZ [0ah].2
+  72  0093  2800     R  JMP L43
+  72  0094  0700     R  MOV A,CR3[3]
+  72  0095  0C00        XOR A,00h
+  72  0096  3D0A        SZ [0ah].2
+  72  0097  2800     R  JMP L28
+  72  0098              L43:
+  72  0098  2800     R  JMP L18
+  72  0099              L21:
+
+;  74: 		   	        case 0:	if(temp == 0)
+  74  0099  1080     R  SZ CR2
+  74  009A  2800     R  JMP L22
+  74  009B  1080     R  SZ CR2[1]
+  74  009C  2800     R  JMP L22
+  74  009D  1080     R  SZ CR2[2]
+  74  009E  2800     R  JMP L22
+  74  009F  1080     R  SZ CR2[3]
+  74  00A0  2800     R  JMP L22
+
+;  75: 	    	            		Led_On(ALLOFF);
+  75  00A1  0F00        MOV A,00h
+  75  00A2  0080     R  MOV Led_On0,A
+文件：led.c        盛群编译器版本 3.00 页次8
+文件：led.c        盛群编译器版本 3.00 页次9 
+
+
+  75  00A3  2000     R  CALL _Led_On
+  75  00A4  2800     R  JMP L19
+  75  00A5              L22:
+
+;  77: 		   	           		    Led_On(LED1);
+  77  00A5  0F01        MOV A,01h
+  77  00A6  0080     R  MOV Led_On0,A
+  77  00A7  2000     R  CALL _Led_On
+
+;  78: 		   	                break;
+  78  00A8  2800     R  JMP L19
+  78  00A9              L24:
+
+;  79: 		   	        case 1: Led_On(LED1);
+  79  00A9  0F01        MOV A,01h
+  79  00AA  0080     R  MOV Led_On0,A
+  79  00AB  2000     R  CALL _Led_On
+
+;  80: 		   	                break;
+  80  00AC  2800     R  JMP L19
+  80  00AD              L25:
+
+;  81: 		   	        case 2: Led_On(LED2);
+  81  00AD  0F02        MOV A,02h
+  81  00AE  0080     R  MOV Led_On0,A
+  81  00AF  2000     R  CALL _Led_On
+
+;  82: 		   	                break;
+  82  00B0  2800     R  JMP L19
+  82  00B1              L26:
+
+;  83: 		   	        case 3: Led_On(LED3);
+  83  00B1  0F03        MOV A,03h
+  83  00B2  0080     R  MOV Led_On0,A
+  83  00B3  2000     R  CALL _Led_On
+
+;  84: 		   	                break;
+  84  00B4  2800     R  JMP L19
+  84  00B5              L27:
+
+;  85: 		   	        case 4: Led_On(LED4);
+  85  00B5  0F04        MOV A,04h
+  85  00B6  0080     R  MOV Led_On0,A
+  85  00B7  2000     R  CALL _Led_On
+
+;  86: 		   	                break;
+  86  00B8  2800     R  JMP L19
+  86  00B9              L28:
+
+;  87: 		   	        case 5: Led_On(LED5);
+  87  00B9  0F05        MOV A,05h
+  87  00BA  0080     R  MOV Led_On0,A
+  87  00BB  2000     R  CALL _Led_On
+
+;  88: 		   	                break;
+  88  00BC  2800     R  JMP L19
+  88  00BD              L18:
+
+;  89: 		   	        default : _pa |= 0x60;
+文件：led.c        盛群编译器版本 3.00 页次10 
+
+  89  00BD  0F60        MOV A,060h
+  89  00BE  0590        ORM A,__pa
+
+;  90: 		   	                  _pb |= 0x1c;
+  90  00BF  0F1C        MOV A,01ch
+  90  00C0  0594        ORM A,__pb
+  90  00C1              L19:
+
+;  93: 		   	     switch((timeSeconds +19)/120)
+  93  00C1  0F13        MOV A,013h
+  93  00C2  0300     E  ADD A,_timeSeconds
+  93  00C3  0080     R  MOV b0_3,A
+  93  00C4  0F00        MOV A,00h
+  93  00C5  1300     E  ADC A,_timeSeconds[1]
+文件：led.c        盛群编译器版本 3.00 页次9
+
+  93  00C6  0080     R  MOV b0_3[1],A
+  93  00C7  0F00        MOV A,00h
+  93  00C8  1300     E  ADC A,_timeSeconds[2]
+  93  00C9  0080     R  MOV b0_3[2],A
+  93  00CA  0F00        MOV A,00h
+  93  00CB  1300     E  ADC A,_timeSeconds[3]
+  93  00CC  0080     R  MOV b0_3[3],A
+  93  00CD  0700     R  MOV A,b0_3
+  93  00CE  0080     E  MOV T2,A
+  93  00CF  0700     R  MOV A,b0_3[1]
+  93  00D0  0080     E  MOV RH,A
+  93  00D1  0700     R  MOV A,b0_3[2]
+  93  00D2  0080     E  MOV RM,A
+  93  00D3  0700     R  MOV A,b0_3[3]
+  93  00D4  0080     E  MOV RU,A
+  93  00D5  0F00        MOV A,00h
+  93  00D6  0080     E  MOV T6,A
+  93  00D7  0F00        MOV A,00h
+  93  00D8  0080     E  MOV T5,A
+  93  00D9  0F00        MOV A,00h
+  93  00DA  0080     E  MOV T4,A
+  93  00DB  0F78        MOV A,078h
+  93  00DC  0080     E  MOV T3,A
+  93  00DD  2000     E  CALL DIVUL4
+  93  00DE  0700     E  MOV A,RU
+  93  00DF  0080     R  MOV CR4[3],A
+  93  00E0  0700     E  MOV A,RM
+  93  00E1  0080     R  MOV CR4[2],A
+  93  00E2  0700     E  MOV A,RH
+  93  00E3  0080     R  MOV CR4[1],A
+  93  00E4  0700     E  MOV A,T2
+  93  00E5  0080     R  MOV CR4,A
+  93  00E6  0700     R  MOV A,CR4
+  93  00E7  0500     R  OR A,CR4[1]
+  93  00E8  390A        SNZ [0ah].2
+  93  00E9  2800     R  JMP L44
+  93  00EA  0500     R  OR A,CR4[2]
+  93  00EB  390A        SNZ [0Ah].2
+  93  00EC  2800     R  JMP L44
+  93  00ED  0500     R  OR A,CR4[3]
+  93  00EE  3D0A        SZ [0Ah].2
+  93  00EF  2800     R  JMP L32
+  93  00F0              L44:
+  93  00F0  0700     R  MOV A,CR4
+文件：led.c        盛群编译器版本 3.00 页次11 
+
+  93  00F1  0C01        XOR A,01h
+  93  00F2  390A        SNZ [0ah].2
+  93  00F3  2800     R  JMP L45
+  93  00F4  0700     R  MOV A,CR4[1]
+  93  00F5  0C00        XOR A,00h
+  93  00F6  390A        SNZ [0ah].2
+  93  00F7  2800     R  JMP L45
+  93  00F8  0700     R  MOV A,CR4[2]
+  93  00F9  0C00        XOR A,00h
+  93  00FA  390A        SNZ [0ah].2
+  93  00FB  2800     R  JMP L45
+  93  00FC  0700     R  MOV A,CR4[3]
+  93  00FD  0C00        XOR A,00h
+  93  00FE  3D0A        SZ [0ah].2
+  93  00FF  2800     R  JMP L33
+文件：led.c        盛群编译器版本 3.00 页次10
+
+  93  0100              L45:
+  93  0100  0700     R  MOV A,CR4
+  93  0101  0C02        XOR A,02h
+  93  0102  390A        SNZ [0ah].2
+  93  0103  2800     R  JMP L46
+  93  0104  0700     R  MOV A,CR4[1]
+  93  0105  0C00        XOR A,00h
+  93  0106  390A        SNZ [0ah].2
+  93  0107  2800     R  JMP L46
+  93  0108  0700     R  MOV A,CR4[2]
+  93  0109  0C00        XOR A,00h
+  93  010A  390A        SNZ [0ah].2
+  93  010B  2800     R  JMP L46
+  93  010C  0700     R  MOV A,CR4[3]
+  93  010D  0C00        XOR A,00h
+  93  010E  3D0A        SZ [0ah].2
+  93  010F  2800     R  JMP L34
+  93  0110              L46:
+  93  0110  0700     R  MOV A,CR4
+  93  0111  0C03        XOR A,03h
+  93  0112  390A        SNZ [0ah].2
+  93  0113  2800     R  JMP L47
+  93  0114  0700     R  MOV A,CR4[1]
+  93  0115  0C00        XOR A,00h
+  93  0116  390A        SNZ [0ah].2
+  93  0117  2800     R  JMP L47
+  93  0118  0700     R  MOV A,CR4[2]
+  93  0119  0C00        XOR A,00h
+  93  011A  390A        SNZ [0ah].2
+  93  011B  2800     R  JMP L47
+  93  011C  0700     R  MOV A,CR4[3]
+  93  011D  0C00        XOR A,00h
+  93  011E  3D0A        SZ [0ah].2
+  93  011F  2800     R  JMP L35
+  93  0120              L47:
+  93  0120  0700     R  MOV A,CR4
+  93  0121  0C04        XOR A,04h
+  93  0122  390A        SNZ [0ah].2
+  93  0123  2800     R  JMP L48
+  93  0124  0700     R  MOV A,CR4[1]
+  93  0125  0C00        XOR A,00h
+  93  0126  390A        SNZ [0ah].2
+  93  0127  2800     R  JMP L48
+文件：led.c        盛群编译器版本 3.00 页次12 
+
+  93  0128  0700     R  MOV A,CR4[2]
+  93  0129  0C00        XOR A,00h
+  93  012A  390A        SNZ [0ah].2
+  93  012B  2800     R  JMP L48
+  93  012C  0700     R  MOV A,CR4[3]
+  93  012D  0C00        XOR A,00h
+  93  012E  3D0A        SZ [0ah].2
+  93  012F  2800     R  JMP L36
+  93  0130              L48:
+  93  0130  0700     R  MOV A,CR4
+  93  0131  0C05        XOR A,05h
+  93  0132  390A        SNZ [0ah].2
+  93  0133  2800     R  JMP L49
+  93  0134  0700     R  MOV A,CR4[1]
+  93  0135  0C00        XOR A,00h
+  93  0136  390A        SNZ [0ah].2
+  93  0137  2800     R  JMP L49
+文件：led.c        盛群编译器版本 3.00 页次11
+
+  93  0138  0700     R  MOV A,CR4[2]
+  93  0139  0C00        XOR A,00h
+  93  013A  390A        SNZ [0ah].2
+  93  013B  2800     R  JMP L49
+  93  013C  0700     R  MOV A,CR4[3]
+  93  013D  0C00        XOR A,00h
+  93  013E  3D0A        SZ [0ah].2
+  93  013F  2800     R  JMP L37
+  93  0140              L49:
+  93  0140  2800     R  JMP L30
+  93  0141              L32:
+
+;  95: 		   	    	case 0: _pa |= 0x0c;
+  95  0141  0F0C        MOV A,0ch
+  95  0142  0590        ORM A,__pa
+
+;  96: 		   	    	        _pb |= 0x07;
+  96  0143  0F07        MOV A,07h
+  96  0144  0594        ORM A,__pb
+
+;  97: 				            break;
+  97  0145  2800     R  JMP L30
+  97  0146              L33:
+
+;  98: 		   	    	case 1: Led_On(LED6);
+  98  0146  0F06        MOV A,06h
+  98  0147  0080     R  MOV Led_On0,A
+  98  0148  2000     R  CALL _Led_On
+
+;  99: 		   	                break;
+  99  0149  2800     R  JMP L30
+  99  014A              L34:
+
+; 100: 		   	        case 2:	Led_On(LED7);
+ 100  014A  0F07        MOV A,07h
+ 100  014B  0080     R  MOV Led_On0,A
+ 100  014C  2000     R  CALL _Led_On
+
+; 101: 		   	                break;
+ 101  014D  2800     R  JMP L30
+ 101  014E              L35:
+文件：led.c        盛群编译器版本 3.00 页次13 
+
+
+; 102: 		   	        case 3: Led_On(LED8);
+ 102  014E  0F08        MOV A,08h
+ 102  014F  0080     R  MOV Led_On0,A
+ 102  0150  2000     R  CALL _Led_On
+
+; 103: 		   	                break;
+ 103  0151  2800     R  JMP L30
+ 103  0152              L36:
+
+; 104: 		   	        case 4: Led_On(LED9);
+ 104  0152  0F09        MOV A,09h
+ 104  0153  0080     R  MOV Led_On0,A
+ 104  0154  2000     R  CALL _Led_On
+
+; 105: 		   	                break;
+ 105  0155  2800     R  JMP L30
+ 105  0156              L37:
+
+; 106: 		   	        case 5: Led_On(LED10);
+ 106  0156  0F0A        MOV A,0ah
+ 106  0157  0080     R  MOV Led_On0,A
+ 106  0158  2000     R  CALL _Led_On
+ 106  0159              L30:
+ 106  0159              L17:
+ 106  0159  0003        RET
+ 106  0000  0004[       LOCAL b0_3 DB 4 DUP(?)
+            00
+            ]
+文件：led.c        盛群编译器版本 3.00 页次12
+
+
+;  70: 	 u32 temp;
+  70  0004  0004[       LOCAL CR2 DB 4 DUP (?) ; temp
+            00
+            ]
+  70  0008  0004[       LOCAL CR3 DB 4 DUP (?) ; 20
+            00
+            ]
+  70  000C  0004[       LOCAL CR4 DB 4 DUP (?) ; 31
+            00
+            ]
+  70  015A              _led_state ENDP
+  70  015A              EXTERN _timeSeconds:BYTE
+  70  015A              EXTERN RH:BYTE
+  70  015A              EXTERN RM:BYTE
+  70  015A              EXTERN RU:BYTE
+  70  015A              EXTERN T2:BYTE
+  70  015A              EXTERN T3:BYTE
+  70  015A              EXTERN T4:BYTE
+  70  015A              EXTERN T5:BYTE
+  70  015A              EXTERN T6:BYTE
+  70  015A              EXTERN T7:BYTE
+  70  015A              EXTERN T8:BYTE
+  70  015A              EXTERN T9:BYTE
+  70  015A              EXTERN T10:BYTE
+  70  015A              EXTERN T11:BYTE
+  70  015A              EXTERN T12:BYTE
+  70  015A              EXTERN T13:BYTE
+  70  015A              EXTERN DIVUL4:NEAR
+文件：led.c        盛群编译器版本 3.00 页次14 
+
+
+
+        0 Errors

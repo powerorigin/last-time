@@ -1,0 +1,337 @@
+文件：key.c        盛群编译器版本 3.00 页次1
+
+
+
+;  12: {		
+  12  0000              __acsr EQU [023H]
+  12  0000              __adcr EQU [022H]
+  12  0000              __adrh EQU [021H]
+  12  0000              __adrl EQU [020H]
+  12  0000              __pwm0 EQU [01fH]
+  12  0000              __intc1 EQU [01eH]
+  12  0000              __ctrl1 EQU [01bH]
+  12  0000              __ctrl0 EQU [01aH]
+  12  0000              __pcpu EQU [019H]
+  12  0000              __pcc EQU [018H]
+  12  0000              __pc EQU [017H]
+  12  0000              __pbpu EQU [016H]
+  12  0000              __pbc EQU [015H]
+  12  0000              __pb EQU [014H]
+  12  0000              __pawk EQU [013H]
+  12  0000              __papu EQU [012H]
+  12  0000              __pac EQU [011H]
+  12  0000              __pa EQU [010H]
+  12  0000              __tmr0c EQU [0dH]
+  12  0000              __tmr0 EQU [0cH]
+  12  0000              __intc0 EQU [0bH]
+  12  0000              __status EQU [0aH]
+  12  0000              __wdts EQU [09H]
+  12  0000              __tblh EQU [08H]
+  12  0000              __tblp EQU [07H]
+  12  0000              __pcl EQU [06H]
+  12  0000              __acc EQU [05H]
+  12  0000              __mp1 EQU [03H]
+  12  0000              __mp0 EQU [01H]
+  12  0000              __iar1 EQU [02H]
+  12  0000              __iar0 EQU [00H]
+  12  0000              @Key_Init .SECTION 'CODE'
+  12  0000              PUBLIC _Key_Init
+  12  0000              _Key_Init PROC
+
+;  13: 	key_stat[0].state = KEY_UP;
+  13  0000  1F00     R  CLR _key_stat
+
+;  14: 	key_stat[1].state = KEY_UP;
+  14  0001  1F00     R  CLR _key_stat[1]
+  14  0002              L1:
+  14  0002  0003        RET
+  14  0003              _Key_Init ENDP
+
+;  31: {
+  31  0000              @key_Read .SECTION 'CODE'
+  31  0000              PUBLIC _key_Read
+  31  0000              _key_Read PROC
+
+;  30: u8 key_Read(u8 key)
+  30  0000              PUBLIC key_Read0
+  30  0000  00          LOCAL key_Read0 DB ? ; key
+
+;  32:     u8 ret = KEY_UP;
+  32  0000  1F00     R  CLR CR1
+
+;  34:     switch(key)
+文件：key.c        盛群编译器版本 3.00 页次2 
+
+  34  0001  1080     R  SZ key_Read0
+文件：key.c        盛群编译器版本 3.00 页次2
+
+  34  0002  2800     R  JMP L12
+  34  0003  2800     R  JMP L6
+  34  0004              L12:
+  34  0004  0700     R  MOV A,key_Read0
+  34  0005  0C01        XOR A,01h
+  34  0006  3D0A        SZ [0ah].2
+  34  0007  2800     R  JMP L9
+  34  0008  2800     R  JMP L5
+  34  0009              L6:
+
+;  37:         if(KEY1 == 0)
+  37  0009  3F90        SZ [010H].7
+  37  000A  2800     R  JMP L5
+
+;  39:             ret = KEY_DOWN;
+  39  000B  0F01        MOV A,01h
+  39  000C  0080     R  MOV CR1,A
+
+;  41:         break;
+  41  000D  2800     R  JMP L5
+  41  000E              L9:
+
+;  44:         if(KEY2 == 0)
+  44  000E  3C90        SZ [010H].1
+  44  000F  2800     R  JMP L5
+
+;  46:             ret = KEY_DOWN;
+  46  0010  0F01        MOV A,01h
+  46  0011  0080     R  MOV CR1,A
+  46  0012              L5:
+
+;  53:     return ret;
+  53  0012  0700     R  MOV A,CR1
+  53  0013              L3:
+  53  0013  0003        RET
+
+;  32:     u8 ret = KEY_UP;
+  32  0001  00          LOCAL CR1 DB ? ; ret
+  32  0014              _key_Read ENDP
+
+;  65: {
+  65  0000              @KeyProcCB .SECTION 'CODE'
+  65  0000              PUBLIC _KeyProcCB
+  65  0000              _KeyProcCB PROC
+
+;  64: void KeyProcCB(u8 keys, u8 stat)
+  64  0000              PUBLIC KeyProcCB0
+  64  0000  00          LOCAL KeyProcCB0 DB ? ; keys
+  64  0000              PUBLIC KeyProcCB1
+  64  0001  00          LOCAL KeyProcCB1 DB ? ; stat
+
+;  66:     if(stat == KEY_SHORT)
+  66  0000  0700     R  MOV A,KeyProcCB1
+  66  0001  0C02        XOR A,02h
+  66  0002  390A        SNZ [0ah].2
+  66  0003  2800     R  JMP L14
+
+;  68:         switch(keys)
+文件：key.c        盛群编译器版本 3.00 页次3 
+
+文件：key.c        盛群编译器版本 3.00 页次3
+
+  68  0004  1080     R  SZ KeyProcCB0
+  68  0005  2800     R  JMP L24
+  68  0006  2800     R  JMP L18
+  68  0007              L24:
+  68  0007  0700     R  MOV A,KeyProcCB0
+  68  0008  0C01        XOR A,01h
+  68  0009  3D0A        SZ [0ah].2
+  68  000A  2800     R  JMP L21
+  68  000B  2800     R  JMP L17
+  68  000C              L18:
+
+;  71:         case 0:  if(timeSeconds == 0)
+  71  000C  1080     E  SZ _timeSeconds
+  71  000D  2800     R  JMP L19
+  71  000E  1080     E  SZ _timeSeconds[1]
+  71  000F  2800     R  JMP L19
+  71  0010  1080     E  SZ _timeSeconds[2]
+  71  0011  2800     R  JMP L19
+  71  0012  1080     E  SZ _timeSeconds[3]
+  71  0013  2800     R  JMP L19
+
+;  72:        				 timems = 0;
+  72  0014  1F00     E  CLR _timems
+  72  0015  1F00     E  CLR _timems[1]
+  72  0016  1F00     E  CLR _timems[2]
+  72  0017  1F00     E  CLR _timems[3]
+  72  0018              L19:
+
+;  73:                   timeSeconds += 20;
+  73  0018  0F14        MOV A,014h
+  73  0019  0380     E  ADDM A,_timeSeconds
+  73  001A  0F00        MOV A,00h
+  73  001B  1380     E  ADCM A,_timeSeconds[1]
+  73  001C  0F00        MOV A,00h
+  73  001D  1380     E  ADCM A,_timeSeconds[2]
+  73  001E  0F00        MOV A,00h
+  73  001F  1380     E  ADCM A,_timeSeconds[3]
+
+;  85:             break;
+  85  0020  2800     R  JMP L17
+  85  0021              L21:
+
+;  87:         case 1:   timeSeconds += 120;  
+  87  0021  0F78        MOV A,078h
+  87  0022  0380     E  ADDM A,_timeSeconds
+  87  0023  0F00        MOV A,00h
+  87  0024  1380     E  ADCM A,_timeSeconds[1]
+  87  0025  0F00        MOV A,00h
+  87  0026  1380     E  ADCM A,_timeSeconds[2]
+  87  0027  0F00        MOV A,00h
+  87  0028  1380     E  ADCM A,_timeSeconds[3]
+  87  0029              L17:
+
+;  94:         if(timeSeconds > 700)
+  94  0029  0F00        MOV A,00h
+  94  002A  0200     E  SUB A,_timeSeconds[3]
+  94  002B  380A        SNZ [0ah].0
+  94  002C  2800     R  JMP L25
+文件：key.c        盛群编译器版本 3.00 页次4 
+
+  94  002D  390A        SNZ [0ah].2
+  94  002E  2800     R  JMP L22
+  94  002F  0F00        MOV A,00h
+  94  0030  0200     E  SUB A,_timeSeconds[2]
+  94  0031  380A        SNZ [0Ah].0
+文件：key.c        盛群编译器版本 3.00 页次4
+
+  94  0032  2800     R  JMP L25
+  94  0033  390A        SNZ [0Ah].2
+  94  0034  2800     R  JMP L22
+  94  0035  0F02        MOV A,02h
+  94  0036  0200     E  SUB A,_timeSeconds[1]
+  94  0037  380A        SNZ [0Ah].0
+  94  0038  2800     R  JMP L25
+  94  0039  390A        SNZ [0Ah].2
+  94  003A  2800     R  JMP L22
+  94  003B  0FBC        MOV A,0bch
+  94  003C  0200     E  SUB A,_timeSeconds
+  94  003D  3C0A        SZ [0ah].0
+  94  003E  2800     R  JMP L22
+  94  003F              L25:
+
+;  95:              timeSeconds = 0;                           
+  95  003F  1F00     E  CLR _timeSeconds
+  95  0040  1F00     E  CLR _timeSeconds[1]
+  95  0041  1F00     E  CLR _timeSeconds[2]
+  95  0042  1F00     E  CLR _timeSeconds[3]
+  95  0043              L22:
+
+;  96:         led_state();      	
+  96  0043  2000     E  CALL _led_state
+  96  0044              L14:
+  96  0044              L13:
+  96  0044  0003        RET
+  96  0045              _KeyProcCB ENDP
+
+; 109: {
+ 109  0000              @key_Scan .SECTION 'CODE'
+ 109  0000              PUBLIC _key_Scan
+ 109  0000              _key_Scan PROC
+
+; 112:     for(idx = 0; idx < KEY_MUM; idx ++)
+ 112  0000  1F00     R  CLR CR2
+ 112  0001  2800     R  JMP L30
+ 112  0002              L27:
+
+; 114:         if(KEY_DOWN == key_Read(idx))
+ 114  0002  0700     R  MOV A,CR2
+ 114  0003  0080     R  MOV key_Read0,A
+ 114  0004  2000     R  CALL _key_Read
+ 114  0005  0080     R  MOV b0_4,A
+ 114  0006  0700     R  MOV A,b0_4
+ 114  0007  0C01        XOR A,01h
+ 114  0008  390A        SNZ [0ah].2
+ 114  0009  2800     R  JMP L31
+
+; 116:             switch(key_stat[idx].state)
+ 116  000A  0F00     R  MOV A,OFFSET _key_stat
+ 116  000B  0300     R  ADD A,CR2
+ 116  000C  0081        MOV [01H],A
+文件：key.c        盛群编译器版本 3.00 页次5 
+
+ 116  000D  0700        MOV A,[00H]
+ 116  000E  0080     R  MOV CR4,A
+ 116  000F  1080     R  SZ CR4
+ 116  0010  2800     R  JMP L39
+ 116  0011  2800     R  JMP L36
+ 116  0012              L39:
+ 116  0012  2800     R  JMP L32
+文件：key.c        盛群编译器版本 3.00 页次5
+
+ 116  0013              L36:
+
+; 119:                 key_stat[idx].state = KEY_DOWN;
+ 119  0013  0700     R  MOV A,CR2
+ 119  0014  0B00     R  ADD A,OFFSET _key_stat
+ 119  0015  0080     R  MOV b0_4,A
+ 119  0016  0700     R  MOV A,b0_4
+ 119  0017  0081        MOV [01H],A
+ 119  0018  0F01        MOV A,01h
+ 119  0019  0080        MOV [00H],A
+
+; 133:         }
+ 133  001A  2800     R  JMP L32
+ 133  001B              L31:
+
+; 136:         	if(key_stat[idx].state == KEY_DOWN)
+ 136  001B  0F00     R  MOV A,OFFSET _key_stat
+ 136  001C  0300     R  ADD A,CR2
+ 136  001D  0081        MOV [01H],A
+ 136  001E  0700        MOV A,[00H]
+ 136  001F  0080     R  MOV b0_4,A
+ 136  0020  0700     R  MOV A,b0_4
+ 136  0021  0C01        XOR A,01h
+ 136  0022  390A        SNZ [0ah].2
+ 136  0023  2800     R  JMP L37
+
+; 137:         	    KeyProcCB(idx, KEY_SHORT);                   
+ 137  0024  0700     R  MOV A,CR2
+ 137  0025  0080     R  MOV KeyProcCB0,A
+ 137  0026  0F02        MOV A,02h
+ 137  0027  0080     R  MOV KeyProcCB1,A
+ 137  0028  2000     R  CALL _KeyProcCB
+ 137  0029              L37:
+
+; 139:             key_stat[idx].state = KEY_UP;
+ 139  0029  0700     R  MOV A,CR2
+ 139  002A  0B00     R  ADD A,OFFSET _key_stat
+ 139  002B  0080     R  MOV b0_4,A
+ 139  002C  0700     R  MOV A,b0_4
+ 139  002D  0081        MOV [01H],A
+ 139  002E  0F00        MOV A,00h
+ 139  002F  0080        MOV [00H],A
+ 139  0030              L32:
+ 139  0030              L28:
+
+; 112:     for(idx = 0; idx < KEY_MUM; idx ++)
+ 112  0030  1480     R  INC CR2
+ 112  0031              L30:
+ 112  0031  0700     R  MOV A,CR2
+ 112  0032  0A02        SUB A,02h
+ 112  0033  380A        SNZ [0ah].0
+文件：key.c        盛群编译器版本 3.00 页次6 
+
+ 112  0034  2800     R  JMP L27
+ 112  0035              L26:
+ 112  0035  0003        RET
+ 112  0000  00          LOCAL b0_4 DB ?
+
+; 110:     u8 idx;
+ 110  0001  00          LOCAL CR2 DB ? ; idx
+ 110  0002  00          LOCAL CR4 DB ? ; 35
+ 110  0036              _key_Scan ENDP
+ 110  0036              PUBLIC _key_stat
+文件：key.c        盛群编译器版本 3.00 页次6
+
+ 110  0000              @key_stat .SECTION 'DATA'
+
+;   9: } key_stat[KEY_MUM];
+   9  0000  0002[       _key_stat DB 2 DUP (?) ; key_stat
+            00
+            ]
+   9  0002              EXTERN _led_state:NEAR
+   9  0002              EXTERN _timems:BYTE
+   9  0002              EXTERN _timeSeconds:BYTE
+
+
+        0 Errors
